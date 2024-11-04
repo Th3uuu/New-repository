@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferramenta de Estudo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Ferramenta Interativa de Estudo</h1>
+    </header>
+    
+    <main>
+        <section id="flashcards">
+            <h2>Flashcards</h2>
+            <input type="text" id="question" placeholder="Pergunta">
+            <input type="text" id="answer" placeholder="Resposta">
+            <button onclick="addFlashcard()">Adicionar Flashcard</button>
+            <div id="flashcard-list"></div>
+        </section>
+        
+        <section id="quiz">
+            <h2>Quiz</h2>
+            <button onclick="startQuiz()">Iniciar Quiz</button>
+            <div id="quiz-container"></div>
+        </section>
+        
+        <section id="anotacoes">
+            <h2>Anotações</h2>
+            <textarea id="note" placeholder="Escreva suas anotações aqui..."></textarea>
+            <button onclick="saveNote()">Salvar Anotação</button>
+            <div id="note-list"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 0;
+    text-align: center;
+}
+
+main {
+    margin-top: 20px;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+button {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+const flashcards = [];
+const notes = [];
+
+function addFlashcard() {
+    const question = document.getElementById('question').value;
+    const answer = document.getElementById('answer').value;
+    if (question && answer) {
+        flashcards.push({ question, answer });
+        document.getElementById('flashcard-list').innerHTML += `<div>${question} - ${answer}</div>`;
+        document.getElementById('question').value = '';
+        document.getElementById('answer').value = '';
+    }
+}
+
+function startQuiz() {
+    if (flashcards.length === 0) {
+        alert('Adicione flashcards para iniciar o quiz.');
+        return;
+    }
+    let quizHtml = '';
+    flashcards.forEach((card, index) => {
+        quizHtml += `<div>${index + 1}. ${card.question} <button onclick="showAnswer(${index})">Ver Resposta</button></div>`;
+    });
+    document.getElementById('quiz-container').innerHTML = quizHtml;
+}
+
+function showAnswer(index) {
+    alert(`Resposta: ${flashcards[index].answer}`);
+}
+
+function saveNote() {
+    const note = document.getElementById('note').value;
+    if (note) {
+        notes.push(note);
+        document.getElementById('note-list').innerHTML += `<div>${note}</div>`;
+        document.getElementById('note').value = '';
+    }
+}
